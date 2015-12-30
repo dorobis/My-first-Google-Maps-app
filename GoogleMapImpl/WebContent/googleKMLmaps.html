@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+#map-canvas {
+	width: 1000px;
+	height: 900px;
+	background-color: #CCC;
+}
+</style>
+<script src="https://maps.googleapis.com/maps/api/js"></script>
+<script>
+	var kmlUrl = 'http://virtualglobetrotting.com/states/NJ/middletown/export-0.kml';
+	function initialize() {
+		var map = new google.maps.Map(document.getElementById(
+				'map-canvas'), 
+				{
+					center : new google.maps.LatLng(40.39068086, -74.12902057),
+					zoom : 12,
+					mapTypeId : google.maps.MapTypeId.TERRAIN
+				}
+		);
+		loadKMLLayer(kmlUrl, map);
+	}
+	function loadKMLLayer() {
+		var kmlLayer = new google.maps.KmlLayer(
+				kmlUrl, 
+				{
+					  suppressInfoWindows: true,
+					  preserveViewport: false,
+					  map: map
+				}
+		);
+		google.maps.event.addListener(
+				kmlLayer, 
+				'click', 
+				function(event) {
+			  		var content = event.featureData.infoWindowHtml;
+			  		var testimonial = document.getElementById('capture');
+			  		testimonial.innerHTML = content;
+				}
+		);
+	}
+	google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+<meta charset="ISO-8859-1">
+<title>My Google Maps Implementation</title>
+</head>
+<body>
+	<div id="map-canvas"></div>
+</body>
+</html>
